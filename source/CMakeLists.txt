@@ -60,17 +60,43 @@ add_definitions(
 
 
 
-add_executable(legend
-    tutorial04_colored_cube/tutorial04.cpp
+add_executable(game
+    src/main.cpp
     common/shader.cpp
     common/shader.hpp
 )
 
-
-target_link_libraries(legend
+target_link_libraries(game
     ${ALL_LIBS}
 )
 
 # Xcode and Visual working directories
-set_target_properties(legend PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/legend/")
-create_target_launcher(legend WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/legend/")
+set_target_properties(game PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/")
+create_target_launcher(game WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/") # Visual
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SOURCE_GROUP(common REGULAR_EXPRESSION ".*/common/.*" )
+SOURCE_GROUP(shaders REGULAR_EXPRESSION ".*/.*shader$" )
+
+if (NOT ${CMAKE_GENERATOR} MATCHES "Xcode" )
+
+add_custom_command(
+   TARGET game POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/game${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/binaire/"
+)
+
+elseif (${CMAKE_GENERATOR} MATCHES "Xcode" )
+
+endif (NOT ${CMAKE_GENERATOR} MATCHES "Xcode" )
